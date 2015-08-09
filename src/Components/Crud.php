@@ -24,7 +24,7 @@ class Crud
             $lastId = $oneNews['id'];
         }
         $html .= '<input hidden="hidden" id="last-id" value="' . $lastId. '"/>';
-        echo $html;
+        return $html;
     }
 
     public function get()
@@ -45,7 +45,14 @@ class Crud
             'lastId' => $lastId,
             'html' => $html
         ];
-        echo json_encode($response);
+        return $response;
+    }
+
+    public function delete()
+    {
+        return [
+            'result' => true
+        ];
     }
 
     protected function buildNewsRow($news)
@@ -65,16 +72,16 @@ class Crud
         <div class="news-text">{$text}</div>
         <div class="news-controls" style="padding-top: 15px">
             <div class="btn-group btn-group-sm" role="group" aria-label="...">
-              <button type="button" class="btn  btn-info">More</button>
-              <button type="button" class="btn btn-warning">Edit</button>
-              <button type="button" class="btn btn-danger">Delete</button>
+              <button type="button" class="btn btn-info details">More</button>
+              <button type="button" class="btn btn-warning edit">Edit</button>
+              <button type="button" class="btn btn-danger delete">Delete</button>
             </div>
         </div>
     </div>
-</div>
 
-<div class="row divider">
-    <div class="col-sm-12"><hr></div>
+    <div class="row divider">
+        <div class="col-sm-12"><hr></div>
+    </div>
 </div>
 HTML;
         return $html;

@@ -13,5 +13,5 @@ class Constants
 {
     const REQUEST_METHOD_POST = 'POST';
     const REQUEST_METHOD_GET = 'GET';
-    const NEWS_CHUNK_LENGTH = 3;
+    const NEWS_CHUNK_LENGTH = 5;
 }

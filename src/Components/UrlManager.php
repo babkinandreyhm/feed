@@ -24,6 +24,10 @@ class UrlManager
         ];
     }
 
+    /**
+     * @return array|null|string
+     * @throws IncorrectUrlException
+     */
     public function getAction()
     {
         $action = null;
@@ -32,12 +36,12 @@ class UrlManager
         {
             return [self::ACTION_GET, null];
         }
-        list($action, $param) = explode('/', substr($_SERVER['REQUEST_URI'], 1));
+        $action = substr($_SERVER['REQUEST_URI'], 1);
 
         if (!in_array($action, self::getAvailableActions())) {
             throw new IncorrectUrlException('Incorrect request');
         }
 
-        return [$action, $param];
+        return $action;
     }
 }

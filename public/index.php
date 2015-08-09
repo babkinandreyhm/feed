@@ -22,13 +22,13 @@ try {
     $provider = NewsProviderFactory::getNewsProvider($config);
     $crud = new \Components\Crud($provider);
 
-    list($action, $params) = $urlManager->getAction();
+    $action = $urlManager->getAction();
 
     if (strtoupper($_SERVER['REQUEST_METHOD']) == Constants::REQUEST_METHOD_POST) {
-        $crud->$action($params);
+        echo json_encode($crud->$action());
     } else {
         include 'header.php';
-        $crud->index();
+        echo $crud->index();
         include 'footer.php';
     }
 
