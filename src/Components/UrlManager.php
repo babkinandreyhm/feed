@@ -7,6 +7,7 @@ use Exceptions\IncorrectUrlException;
 class UrlManager
 {
     const ACTION_GET = 'get';
+    const ACTION_GET_BATCH = 'getBatch';
     const ACTION_ADD = 'add';
     const ACTION_EDIT = 'edit';
     const ACTION_DELETE = 'delete';
@@ -18,6 +19,7 @@ class UrlManager
     {
         return [
             self::ACTION_GET,
+            self::ACTION_GET_BATCH,
             self::ACTION_ADD,
             self::ACTION_EDIT,
             self::ACTION_DELETE,
@@ -34,7 +36,7 @@ class UrlManager
         //to avoid recursion, actual index content must be in separate script
         if ($_SERVER['REQUEST_URI'] == '/' || $_SERVER['REQUEST_URI'] == '/index')
         {
-            return [self::ACTION_GET, null];
+            return self::ACTION_GET_BATCH;
         }
         $action = substr($_SERVER['REQUEST_URI'], 1);
 

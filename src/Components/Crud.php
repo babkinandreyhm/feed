@@ -16,7 +16,7 @@ class Crud
 
     public function index()
     {
-        $news = $this->provider->getFirstBunch();
+        $news = $this->provider->getFirstBatch();
         $html = '';
         $lastId = null;
         foreach ($news as $oneNews) {
@@ -27,10 +27,10 @@ class Crud
         return $html;
     }
 
-    public function get()
+    public function getBatch()
     {
         $lastId = $_POST['lastId'];
-        $news = $this->provider->getNextBunch($lastId);
+        $news = $this->provider->getNextBatch($lastId);
         $html = '';
         $result = false;
         if (count($news)) {
@@ -48,10 +48,64 @@ class Crud
         return $response;
     }
 
+    public function get()
+    {
+        $news = [];
+        if (!isset($_POST['id'])) {
+            $result = false;
+        } else {
+            $news = $this->provider->get($_POST['id']);
+            $result = is_array($news) ? true : false;
+        }
+        $response = [
+            'result' => $result,
+            'news'   => $news
+        ];
+        return $response;
+    }
+
+    public function edit()
+    {
+        //todo validate input data
+        if (!isset($_POST['id'], $_POST['title'], $_POST['text'])) {
+            $result = false;
+        } else {
+            $result = $this->provider->edit($_POST['id'], $_POST['title'], $_POST['text']);
+        }
+        return [
+            'result' => $result
+        ];
+    }
+
+    public function add()
+    {
+        $news = '';
+        //todo validate input data
+        if (!isset($_POST['title'], $_POST['text'])) {
+            $result = false;
+        } else {
+            if ($id = $this->provider->add($_POST['title'], $_POST['text'])) {
+                $result = true;
+                $news = $this->buildNewsRow($this->provider->get($id));
+            } else {
+                $result = false;
+            }
+        }
+        return [
+            'result' => $result,
+            'news' => $news
+        ];
+    }
+
     public function delete()
     {
+        if (!isset($_POST['id'])) {
+            $result = false;
+        } else {
+            $result = $this->provider->delete($_POST['id']);
+        }
         return [
-            'result' => true
+            'result' => $result
         ];
     }
 
@@ -64,7 +118,7 @@ class Crud
 <div class="row news-row" data-id="{$news['id']}" style="height: 180px">
     <div class="col-sm-10">
         <div class="news-title">
-            <h3>{$news['title']}</h3>
+            <h3 class="news-title-header">{$news['title']}</h3>
             <small class="text-muted">
                 {$news['updated_at']}
             </small>

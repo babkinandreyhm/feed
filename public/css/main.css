@@ -10,3 +10,7 @@ body {
     background: #eee;
     min-height: 600px;
 }
+
+#loader {
+    padding-top: 20px;
+}

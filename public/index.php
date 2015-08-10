@@ -14,7 +14,7 @@ spl_autoload_register(function ($class) {
 });
 
 if (!in_array($config['news_provider'], NewsProviderFactory::getAvailableProviders())) {
-    die('ololo');
+    exit('ololo');
 }
 
 try {
@@ -27,12 +27,14 @@ try {
     if (strtoupper($_SERVER['REQUEST_METHOD']) == Constants::REQUEST_METHOD_POST) {
         echo json_encode($crud->$action());
     } else {
-        include 'header.php';
+        include 'html/header.php';
         echo $crud->index();
-        include 'footer.php';
+        include 'html/footer.php';
     }
 
 } catch (\Exception $e) {
-    //todo something pretty
-    die($e->getMessage());
+    echo json_encode([
+        'result' => false,
+        'message' => $e->getMessage()
+    ]);
 }
